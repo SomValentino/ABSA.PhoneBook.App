@@ -9,6 +9,7 @@ namespace ABSA.PhoneBook.API.Application.Dto.Request
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(10)]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
     }
