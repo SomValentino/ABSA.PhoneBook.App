@@ -48,6 +48,20 @@ namespace ABSA.PhoneBook.Data.Repository
             return await _set.Where(predicate).Skip(page - 1).Take(pageSize).ToListAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, params Expression<Func<TEntity, bool>>[] predicates)
+        {
+            Expression<Func<TEntity, bool>> result = null;
+
+            foreach(var predicate in predicates)
+            {
+                if (result == null) result = predicate;
+                else result = Expression.Lambda<Func<TEntity, bool>>(Expression.AndAlso(result, predicate),
+                    Expression.Parameter(typeof(TEntity)));
+            }
+
+            return await _set.Where(result).ToListAsync();
+        }
+
         public async Task<TEntity> GetEntityById(int id)
         {
             return await _set.FirstOrDefaultAsync(x => x.Id == id);
