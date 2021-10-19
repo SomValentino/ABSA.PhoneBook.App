@@ -32,7 +32,7 @@ namespace ABSA.PhoneBook.API.Application.Services
         {
             var total = await _phoneBookRepository.GetTotalCount();
 
-            var data = await _phoneBookRepository.GetEntities(page, pageSize, x => x.Name.ToLower() == searchCriteria.ToLower());
+            var data = await _phoneBookRepository.GetEntities(page, pageSize, x => x.Name.ToLower() == searchCriteria.ToLower() || searchCriteria == null);
 
             var dtoData = new PhoneBookDto
             {

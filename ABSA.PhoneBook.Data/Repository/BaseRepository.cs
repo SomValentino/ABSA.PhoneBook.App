@@ -35,17 +35,17 @@ namespace ABSA.PhoneBook.Data.Repository
 
         public async Task<IEnumerable<TEntity>> GetEntities()
         {
-            return await _set.ToListAsync();
+            return await _set.OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetEntities(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _set.Where(predicate).ToListAsync();
+            return await _set.Where(predicate).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, Expression<Func<TEntity, bool>> predicate)
         {
-            return await _set.Where(predicate).Skip(page - 1).Take(pageSize).ToListAsync();
+            return await _set.Where(predicate).Skip(page - 1).Take(pageSize).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, params Expression<Func<TEntity, bool>>[] predicates)
@@ -59,7 +59,7 @@ namespace ABSA.PhoneBook.Data.Repository
                     Expression.Parameter(typeof(TEntity)));
             }
 
-            return await _set.Where(result).ToListAsync();
+            return await _set.Where(result).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<TEntity> GetEntityById(int id)

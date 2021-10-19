@@ -1,4 +1,4 @@
-
+using System;
 namespace ABSA.PhoneBook.Domain.Entities {
     public class PhoneBookEntry : BaseEntity
     {
@@ -7,6 +7,7 @@ namespace ABSA.PhoneBook.Domain.Entities {
         public string PhoneNumber { get; set; }
 
         public int PhoneBookId { get; set; }
+        
         public PhoneBook PhoneBook { get; set; }
         
         
