@@ -1,3 +1,4 @@
+using System.Reflection.PortableExecutable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,76 @@ namespace ABSA.PhoneBook.API.Controllers
             var result = await _phoneBookService.Delete(data);
 
             if (!result) throw new Exception("PhoneBook was not deleted");
+
+            return NoContent();
+        }
+        #endregion
+
+        #region PhoneBookEntry
+        [HttpGet("{phoneBookId}/entries")]
+        public async Task<IActionResult> GetEntries(int phoneBookId, int page = 1, int pageSize = 10,string searchCriteria = null)
+        {
+            var entries = await _phoneBookEntryService.Get(page,pageSize,searchCriteria,phoneBookId);
+
+            return Ok(entries);
+        }
+
+        [HttpGet("entry/{entryId}",Name = "GetEntry")]
+        public async Task<IActionResult> GetEntry(int entryId)
+        {
+            var entry = await _phoneBookEntryService.GetById(entryId);
+
+            return Ok(entry);
+        }
+
+        [HttpPost("{phoneBookId}/entry")]
+        public async Task<IActionResult> CreateEntry(int phoneBookId, [FromBody] PhoneBookEntryCreateDto phoneBookEntryCreateDto)
+        {
+            var phoneBook = await _phoneBookService.GetById(phoneBookId);
+
+            if(phoneBook == null) return NotFound("PhoneBook not found");
+
+            var phoneBookEntry = new Domain.Entities.PhoneBookEntry
+            {
+                Name = phoneBookEntryCreateDto.Name,
+                PhoneNumber = phoneBookEntryCreateDto.PhoneNumber,
+                CreatedAt = DateTime.UtcNow,
+                PhoneBookId = phoneBook.Id
+            };
+
+            var createdEntry = await _phoneBookEntryService.Create(phoneBookEntry);
+
+            return CreatedAtAction("GetEntry", new { entryId = createdEntry.Id});
+        }
+
+        [HttpPut("entry/{entryId}")]
+        public async Task<IActionResult> UpdateEntry(int entryId,[FromBody] PhoneBookEntryCreateDto phoneBookEntryCreateDto)
+        {
+            var entry = await _phoneBookEntryService.GetById(entryId);
+
+            if(entry == null) return NotFound();
+
+            entry.Name = phoneBookEntryCreateDto.Name;
+            entry.PhoneNumber = phoneBookEntryCreateDto.PhoneNumber;
+            entry.UpdatedAt = DateTime.UtcNow;
+
+            var result = await _phoneBookEntryService.Update(entry);
+
+            if(!result) throw new Exception("Entry was not updated");
+
+            return NoContent();
+        }
+
+        [HttpDelete("entry/{entryId}")]
+        public async Task<IActionResult> DeleteEntry(int entryId)
+        {
+            var entry = await _phoneBookEntryService.GetById(entryId);
+
+            if (entry == null) return NotFound();
+
+            var result = await _phoneBookEntryService.Delete(entry);
+
+            if (!result) throw new Exception("Entry was not deleted");
 
             return NoContent();
         }
