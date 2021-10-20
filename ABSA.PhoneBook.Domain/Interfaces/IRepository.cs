@@ -10,6 +10,8 @@ namespace ABSA.PhoneBook.Domain.Interfaces
         Task<TEntity> GetEntityById (int id);
         Task<int> GetTotalCount();
 
+        Task<int> GetTotalCount(Expression<Func<TEntity, bool>> predicate);
+
         Task<IEnumerable<TEntity>> GetEntities ();
         Task<IEnumerable<TEntity>> GetEntities (Expression<Func<TEntity,bool>> predicate);
         Task<IEnumerable<TEntity>> GetEntities (int page, int pageSize, Expression<Func<TEntity, bool>> predicate);

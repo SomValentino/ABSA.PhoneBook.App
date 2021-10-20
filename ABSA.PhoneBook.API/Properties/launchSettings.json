@@ -20,7 +20,7 @@
     "ABSA.PhoneBook.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:61281;http://localhost:16105",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

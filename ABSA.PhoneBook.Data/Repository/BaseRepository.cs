@@ -50,16 +50,15 @@ namespace ABSA.PhoneBook.Data.Repository
 
         public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, params Expression<Func<TEntity, bool>>[] predicates)
         {
-            Expression<Func<TEntity, bool>> result = null;
+            IQueryable<TEntity> result = null;
 
             foreach(var predicate in predicates)
             {
-                if (result == null) result = predicate;
-                else result = Expression.Lambda<Func<TEntity, bool>>(Expression.AndAlso(result, predicate),
-                    Expression.Parameter(typeof(TEntity)));
+                if(result == null) result = _set.Where(predicate);
+                else result = result.Where(predicate);
             }
 
-            return await _set.Where(result).OrderByDescending(x => x.CreatedAt).ToListAsync();
+            return await result.OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<TEntity> GetEntityById(int id)
@@ -70,6 +69,11 @@ namespace ABSA.PhoneBook.Data.Repository
         public async Task<int> GetTotalCount()
         {
             return await _set.CountAsync();
+        }
+
+        public async Task<int> GetTotalCount(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _set.Where(predicate).CountAsync();
         }
 
         public async Task UpdateEntity(TEntity entity)

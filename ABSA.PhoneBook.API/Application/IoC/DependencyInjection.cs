@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Reflection;
 using ABSA.PhoneBook.Data.Context;
 using ABSA.PhoneBook.Data.Repository;
@@ -14,7 +15,6 @@ namespace ABSA.PhoneBook.API.Application.IoC {
             services.AddDbContext<PhoneBookDbContext> (options => options.UseSqlServer (configuration.GetConnectionString ("PhoneBookConnection"),
                 sqlServerOptionsAction : sqlOptions => {
                     sqlOptions.MigrationsAssembly (typeof (Startup).GetTypeInfo ().Assembly.GetName ().Name);
-                    sqlOptions.EnableRetryOnFailure (maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds (30), errorNumbersToAdd: null);
                 }));
             return services;
         }
@@ -31,6 +31,18 @@ namespace ABSA.PhoneBook.API.Application.IoC {
             services.AddScoped<IPhoneBookService,PhoneBookService>();
             services.AddScoped<IPhoneBookEntryService, PhoneBookEntryService>();
             
+            return services;
+        }
+
+        public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(option => {
+                option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo{
+                    Title = "ABSA.PhoneBook.API",
+                    Version = "v1"
+                });
+            });
+
             return services;
         }
     }

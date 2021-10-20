@@ -30,9 +30,13 @@ namespace ABSA.PhoneBook.API.Application.Services
 
         public async Task<PhoneBookDto> Get(int page, int pageSize, string searchCriteria)
         {
-            var total = await _phoneBookRepository.GetTotalCount();
-
-            var data = await _phoneBookRepository.GetEntities(page, pageSize, x => x.Name.ToLower() == searchCriteria.ToLower() || searchCriteria == null);
+            
+            var total = await _phoneBookRepository.GetTotalCount(x => searchCriteria == null ||
+                            x.Name.ToLower().Contains(searchCriteria.ToLower()));
+            
+            
+            var data = await _phoneBookRepository.GetEntities(page, pageSize, 
+                            x =>  searchCriteria == null || x.Name.ToLower().Contains(searchCriteria.ToLower()));
 
             var dtoData = new PhoneBookDto
             {

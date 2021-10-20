@@ -31,7 +31,8 @@ namespace ABSA.PhoneBook.API
             services.AddControllers();
             services.AddPhoneBookDbContext(Configuration)
                     .AddDataLayerInfrastructure()
-                    .AddServiceInfrastructure();
+                    .AddServiceInfrastructure()
+                    .AddSwaggerDocumentation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +43,9 @@ namespace ABSA.PhoneBook.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.ApplyMigrations();
+            app.UseMigrations()
+               .UseSwaggerDoc()
+               .UseAPIExceptionHandler();
 
             app.UseHttpsRedirection();
 
