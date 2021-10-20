@@ -31,12 +31,11 @@ namespace ABSA.PhoneBook.API.Application.Services
 
         public async Task<PhoneBookEntryDto> Get(int page, int pageSize, string searchCriteria, int phoneBookId)
         {
-            var total = await _phoneBookEntryRepository.GetTotalCount(x => searchCriteria == null ||
-                            x.Name.ToLower().Contains(searchCriteria.ToLower()));
+            var expression = SearchExpressionHelper.GetSearchEntryExpression<Domain.Entities.PhoneBookEntry>(searchCriteria);
             
-            var data = await _phoneBookEntryRepository.GetEntities(page,pageSize, 
-                            x => searchCriteria == null || 
-                            x.Name.ToLower().Contains(searchCriteria.ToLower()),
+            var total = await _phoneBookEntryRepository.GetTotalCount(expression);
+            
+            var data = await _phoneBookEntryRepository.GetEntities(page,pageSize,expression,
                             x => x.PhoneBookId == phoneBookId);
             
             var dtoData = new PhoneBookEntryDto

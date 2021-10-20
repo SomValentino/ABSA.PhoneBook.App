@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq.Expressions;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ABSA.PhoneBook.API.Application.Dto.Response;
@@ -22,6 +24,11 @@ namespace ABSA.PhoneBook.API.Application.Services
             return book;
         }
 
+        public async Task<bool> HasPhoneBook(string name)
+        {
+            return (await _phoneBookRepository.GetEntities(x => x.Name.ToLower() == name.ToLower())).FirstOrDefault() != null;
+        }
+
         public async Task<bool> Delete(Domain.Entities.PhoneBook phoneBook)
         {
             await _phoneBookRepository.DeleteEntity(phoneBook);
@@ -31,12 +38,11 @@ namespace ABSA.PhoneBook.API.Application.Services
         public async Task<PhoneBookDto> Get(int page, int pageSize, string searchCriteria)
         {
             
-            var total = await _phoneBookRepository.GetTotalCount(x => searchCriteria == null ||
-                            x.Name.ToLower().Contains(searchCriteria.ToLower()));
+            var expression = SearchExpressionHelper.GetSearchExpression<Domain.Entities.PhoneBook>(searchCriteria);
+
+            var total = await _phoneBookRepository.GetTotalCount(expression);
             
-            
-            var data = await _phoneBookRepository.GetEntities(page, pageSize, 
-                            x =>  searchCriteria == null || x.Name.ToLower().Contains(searchCriteria.ToLower()));
+            var data = await _phoneBookRepository.GetEntities(page, pageSize,expression);
 
             var dtoData = new PhoneBookDto
             {

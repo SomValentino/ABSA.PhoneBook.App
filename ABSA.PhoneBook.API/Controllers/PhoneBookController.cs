@@ -44,6 +44,9 @@ namespace ABSA.PhoneBook.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PhoneBookCreateDto phoneBookCreateDto)
         {
+            var phoneBookExist = await _phoneBookService.HasPhoneBook(phoneBookCreateDto.Name);
+            if(phoneBookExist) return BadRequest("PhoneBook with same already exist");
+            
             var phoneBook = new Domain.Entities.PhoneBook
             {
                 Name = phoneBookCreateDto.Name,
