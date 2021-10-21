@@ -45,7 +45,7 @@ namespace ABSA.PhoneBook.Data.Repository
 
         public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, Expression<Func<TEntity, bool>> predicate)
         {
-            return await _set.Where(predicate).Skip(page - 1).Take(pageSize).OrderByDescending(x => x.CreatedAt).ToListAsync();
+            return await _set.Where(predicate).Skip((page - 1)* pageSize).Take(pageSize).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetEntities(int page, int pageSize, params Expression<Func<TEntity, bool>>[] predicates)

@@ -1,5 +1,5 @@
 import {useState,useEffect,useCallback} from 'react'
-const useFetch = (path,method= 'GET',payload = null,queryParams = null) => {
+const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) => {
     const [data, setData] = useState(null)
     const [isloading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -7,16 +7,9 @@ const useFetch = (path,method= 'GET',payload = null,queryParams = null) => {
     const { REACT_APP_BaseUrl } = process.env;
 
     const buildUrl = () => {
-        let fullPath = REACT_APP_BaseUrl + path
-        if(queryParams){
-           let result = []
-           for(const key in queryParams){
-              result.push(`${key}=${queryParams[key]}`)
-           }
-
-           const queryPath = `?${result.join('&')}`
-           fullPath += queryPath
-        }
+        let fullPath = REACT_APP_BaseUrl + path + `?page=${page}&pageSize=${pageSize}`
+        
+        if(search) fullPath += `&searchCriteria=${search}`
 
         return fullPath
     }
@@ -50,11 +43,11 @@ const useFetch = (path,method= 'GET',payload = null,queryParams = null) => {
               setError(null);
             }, 2000);
         }
-    },[path])
+    },[path,page,pageSize])
 
     useEffect(() => {
         GetData()
-    }, [path,GetData])
+    }, [path,GetData,page,pageSize,search])
 
     return {data,isloading,error}
 
