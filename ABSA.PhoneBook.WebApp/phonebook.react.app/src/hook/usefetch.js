@@ -1,7 +1,7 @@
 import {useState,useEffect,useCallback} from 'react'
-const UseApiData = (path,method= 'GET',payload = null,queryParams = null) => {
+const useFetch = (path,method= 'GET',payload = null,queryParams = null) => {
     const [data, setData] = useState(null)
-    const [isloading, setLoading] = useState(false)
+    const [isloading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
     const { REACT_APP_BaseUrl } = process.env;
@@ -11,7 +11,7 @@ const UseApiData = (path,method= 'GET',payload = null,queryParams = null) => {
         if(queryParams){
            let result = []
            for(const key in queryParams){
-              result.push(`key=${queryParams[key]}`)
+              result.push(`${key}=${queryParams[key]}`)
            }
 
            const queryPath = `?${result.join('&')}`
@@ -56,8 +56,8 @@ const UseApiData = (path,method= 'GET',payload = null,queryParams = null) => {
         GetData()
     }, [path,GetData])
 
-    return [data,isloading,error]
+    return {data,isloading,error}
 
 }
 
-export default UseApiData
+export default useFetch

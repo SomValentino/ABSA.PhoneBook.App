@@ -45,5 +45,15 @@ namespace ABSA.PhoneBook.API.Application.IoC {
 
             return services;
         }
+
+        public static IServiceCollection AddAPICors(this IServiceCollection services)
+        {
+            services.AddCors(options => options.AddPolicy("PhoneBookPolicy", builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
+
+            return services;
+        }
     }
 }
