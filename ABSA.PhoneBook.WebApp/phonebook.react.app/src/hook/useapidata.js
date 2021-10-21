@@ -1,8 +1,8 @@
-import {useState} from 'react'
-const UseApiData = (path,payload,queryParams = null) => {
+import {useState,useEffect,useCallback} from 'react'
+const UseApiData = (path,method= 'GET',payload = null,queryParams = null) => {
     const [data, setData] = useState(null)
     const [isloading, setLoading] = useState(false)
-    const [isError, setIsError] = useState(false)
+    const [error, setError] = useState(null)
 
     const { REACT_APP_BaseUrl } = process.env;
 
@@ -21,14 +21,43 @@ const UseApiData = (path,payload,queryParams = null) => {
         return fullPath
     }
 
-    const GetData = async () => {
+    const GetData =  useCallback(async () => {
         const url = buildUrl()
 
         try {
+            setLoading(true)
+            var response = await fetch(url,{
+                method:method,
+                headers: {"Content-Type": "application/json"},
+                body: payload ? JSON.stringify(payload) : null
+            })
             
+            if (response.status === 400)
+              throw new Error("Check your request");
+            if (response.status >= 200 && response.status >= 299)
+              throw new Error("Something went wrong. kindly try again");
+            
+            const responseData = await response.json()
+
+            if(responseData)
+              setData(responseData)
+            setLoading(false)
+
         } catch (error) {
-            
+            setError(error.message)
+            setLoading(false)
+            setTimeout(() => {
+              setError(null);
+            }, 2000);
         }
-    }
+    },[path])
+
+    useEffect(() => {
+        GetData()
+    }, [path,GetData])
+
+    return [data,isloading,error]
 
 }
+
+export default UseApiData
