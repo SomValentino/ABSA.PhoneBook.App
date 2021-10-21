@@ -43,7 +43,7 @@ const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) =
               setError(null);
             }, 2000);
         }
-    },[path,page,pageSize])
+    },[path,page,pageSize,search])
 
     useEffect(() => {
         GetData()

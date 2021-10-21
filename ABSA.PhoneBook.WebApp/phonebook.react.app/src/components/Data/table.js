@@ -132,7 +132,7 @@ function Table({
         <span>
           Page{" "}
           <strong>
-            {pageIndex} of {pageOptions.length}
+            {pageIndex} of {Math.ceil(totalPage/perPage)}
           </strong>{" "}
         </span>
         <span>

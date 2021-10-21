@@ -9,8 +9,10 @@ const Book = () => {
   const history = useHistory()
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(5)
+  const [proxySerach, setProxySerach] = useState('')
+  const [search, setSearch] = useState(null)
   console.log(page)
-  const {data: phonebookData, isloading,error} = useFetch('/api/phonebook','GET',null,page,pageSize)
+  const {data: phonebookData, isloading,error} = useFetch('/api/phonebook','GET',null,page,pageSize,search)
 
   const list = phonebookData?.phoneBooks.map(book => {
     return {
@@ -36,6 +38,17 @@ const Book = () => {
   if (isloading) return <div>loading...</div>;
   return (
     <div className="p-4 bg-white my-4 rounded shadow-xl grid">
+      <div>
+        <Button onClick={() => history.push('/createbook')}>Create new PhoneBook</Button>
+      </div><br/>
+      <div>
+        <input type="text" value={proxySerach} onChange={e => {
+          const textValue = e.target.value;
+          setProxySerach(textValue)
+          if(!textValue) setSearch(null)
+        }} />
+        <Button onClick={() => setSearch(proxySerach) }>Search</Button>
+      </div>
       <PTable
         data={data}
         columns={columns}
