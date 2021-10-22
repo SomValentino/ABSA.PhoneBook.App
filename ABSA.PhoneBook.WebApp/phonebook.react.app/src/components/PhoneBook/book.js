@@ -12,7 +12,7 @@ const Book = () => {
   const [pageSize, setPageSize] = useState(5)
   const [proxySerach, setProxySerach] = useState('')
   const [search, setSearch] = useState(null)
-  console.log(page)
+  
   const {data: phonebookData, isloading,error} = useFetch('/api/phonebook','GET',null,page,pageSize,search)
 
   const list = phonebookData?.phoneBooks.map(book => {
@@ -20,7 +20,7 @@ const Book = () => {
       PhoneBookName: book.name,
       DateCreated: new Date(book.createdAt).toLocaleDateString('en-ZA'),
       Actions: (
-        <Button onClick={() => history.push(`/entry/${book.id}`)}>View</Button>
+        <Button onClick={() => history.push(`/entry/${book.id}/${book.name}`)}>View</Button>
       )
     };
   })
@@ -53,27 +53,32 @@ const Book = () => {
           </Button>
         </div>
         <br />
-        <div>
-          <input
-            type="text"
-            value={proxySerach}
-            onChange={e => {
-              const textValue = e.target.value;
-              setProxySerach(textValue);
-              if (!textValue) setSearch(null);
-            }}
-          />{'  '}
-          <Button onClick={() => setSearch(proxySerach)}>Search</Button>
-        </div>
-        <PTable
-          data={data}
-          columns={columns}
-          setPage={setPage}
-          setPerPage={setPageSize}
-          currentpage={page}
-          perPage={pageSize}
-          totalPage={phonebookData?.total}
-        />
+        { phonebookData ?
+          <div>
+            <div>
+              <input
+                type="text"
+                value={proxySerach}
+                onChange={e => {
+                  const textValue = e.target.value;
+                  setProxySerach(textValue);
+                  if (!textValue) setSearch(null);
+                }}
+              />
+              {"  "}
+              <Button onClick={() => setSearch(proxySerach)}>Search</Button>
+            </div>
+            <PTable
+              data={data}
+              columns={columns}
+              setPage={setPage}
+              setPerPage={setPageSize}
+              currentpage={page}
+              perPage={pageSize}
+              totalPage={phonebookData?.total}
+            />
+          </div> : <div>No PhoneBook available. Click on the Button above to create one</div>
+        }
       </div>
     </Card>
   );
