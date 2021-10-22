@@ -27,7 +27,7 @@ const Navbar = () => {
         <Route exact path="/createbook">
           <CreateBook />
         </Route>
-        <Route exact path="/createentry">
+        <Route exact path="/createentry/:phonebookId/:name">
           <CreateEntry />
         </Route>
       </Switch>

@@ -27,12 +27,7 @@ const Entry = () => {
     return {
       Name: bookEntry.name,
       PhoneNumber: bookEntry.phoneNumber,
-      DateCreated: new Date(bookEntry.createdAt).toLocaleDateString("en-ZA"),
-      Actions: (
-        <Button onClick={() => history.push(`/entry/${bookEntry.id}`)}>
-          View
-        </Button>
-      )
+      DateCreated: new Date(bookEntry.createdAt).toLocaleDateString("en-ZA")
     };
   });
 
@@ -50,10 +45,6 @@ const Entry = () => {
       {
         Header: "DateCreated",
         accessor: "DateCreated"
-      },
-      {
-        Header: "Actions",
-        accessor: "Actions"
       }
     ],
     []
@@ -64,7 +55,7 @@ const Entry = () => {
       <div className="p-4 bg-white my-4 rounded shadow-xl grid">
         <h4>{`${name} - Entries`}</h4><br/>
         <div>
-          <Button onClick={() => history.push("/createentry")}>
+          <Button onClick={() => history.push(`/createentry/${phonebookId}/${name}`)}>
             Create new PhoneBook Entry
           </Button>
         </div>
@@ -97,7 +88,7 @@ const Entry = () => {
         ): <div>No entry avaliable. Click on button above to create entry</div>}
       </div>
       <div>
-        <Button type="button" variant="danger">Back</Button>
+        <Button type="button" variant="danger" onClick={() => history.push('/')}>Back</Button>
       </div>
     </Card>
   );
