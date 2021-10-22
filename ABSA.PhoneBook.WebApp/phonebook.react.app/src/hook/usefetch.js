@@ -1,5 +1,5 @@
 import {useState,useEffect,useCallback} from 'react'
-const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) => {
+const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,search=null) => {
     const [data, setData] = useState(null)
     const [isloading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -7,7 +7,9 @@ const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) =
     const { REACT_APP_BaseUrl } = process.env;
 
     const buildUrl = () => {
-        let fullPath = REACT_APP_BaseUrl + path + `?page=${page}&pageSize=${pageSize}`
+        let fullPath = REACT_APP_BaseUrl + path
+
+        if(page && pageSize) fullPath +=`?page=${page}&pageSize=${pageSize}`
         
         if(search) fullPath += `&searchCriteria=${search}`
 
@@ -18,7 +20,7 @@ const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) =
         const url = buildUrl()
 
         try {
-            setLoading(true)
+            if((method === 'POST' || method === 'PUT') && !payload) return
             var response = await fetch(url,{
                 method:method,
                 headers: {"Content-Type": "application/json"},
@@ -43,11 +45,11 @@ const useFetch = (path,method= 'GET',payload = null,page,pageSize,search=null) =
               setError(null);
             }, 2000);
         }
-    },[path,page,pageSize,search])
+    },[path,page,pageSize,search,payload])
 
     useEffect(() => {
         GetData()
-    }, [path,GetData,page,pageSize,search])
+    }, [path,GetData,page,pageSize,search,payload])
 
     return {data,isloading,error}
 

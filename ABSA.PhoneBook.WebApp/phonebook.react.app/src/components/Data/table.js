@@ -1,7 +1,10 @@
 import React from "react";
 import { useTable, usePagination } from "react-table";
 
-function Table({
+import Table from "react-bootstrap/Table";
+import { Button } from "react-bootstrap";
+
+function PTable({
   setPerPage,
   setPage,
   columns,
@@ -51,7 +54,7 @@ function Table({
 
   return (
     <>
-      <table {...getTableProps()} className="table-fixed">
+      <Table {...getTableProps()} className="table-fixed">
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -93,46 +96,50 @@ function Table({
             );
           })}
         </tbody>
-      </table>
+      </Table>
 
       <div className="flex justify-between bg-red-100 p-4">
-        <button
+        <Button
           onClick={() => {
             setPage(1);
           }}
           disabled={currentpage === 1}
+          variant="danger"
         >
           first
-        </button>{" "}
-        <button
+        </Button>{" "}
+        <Button
           onClick={() => {
             setPage(s => (s === 0 ? 0 : s - 1));
           }}
           disabled={currentpage === 1}
+          variant="danger"
         >
           prev
-        </button>{" "}
-        <button
+        </Button>{" "}
+        <Button
           onClick={() => {
             setPage(s => s + 1);
             console.log(currentpage);
           }}
           disabled={currentpage >= Math.ceil(totalPage / perPage)}
+          variant="success"
         >
           next
-        </button>{" "}
-        <button
+        </Button>{" "}
+        <Button
           onClick={() => {
             setPage(Math.ceil(totalPage / perPage));
           }}
           disabled={currentpage >= Math.ceil(totalPage / perPage)}
+          variant="success"
         >
           last
-        </button>{" "}
+        </Button>{" "}
         <span>
           Page{" "}
           <strong>
-            {pageIndex} of {Math.ceil(totalPage/perPage)}
+            {pageIndex} of {Math.ceil(totalPage / perPage)}
           </strong>{" "}
         </span>
         <span>
@@ -141,9 +148,9 @@ function Table({
             type="number"
             defaultValue={pageIndex}
             min="1"
-            max={totalPage}
+            max={Math.ceil(totalPage / perPage)}
             onChange={e => {
-              const page = e.target.value ? Number(e.target.value) : 1;
+              let page = e.target.value ? Number(e.target.value) : 1;
               setPage(page);
             }}
             className="w-20 border-2 rounded px-2"
@@ -153,7 +160,7 @@ function Table({
           value={perPage}
           onChange={e => {
             // setPageSize(Number(e.target.value));
-            console.log(Number(e.target.value))
+            console.log(Number(e.target.value));
             setPerPage(Number(e.target.value));
           }}
         >
@@ -168,4 +175,4 @@ function Table({
   );
 }
 
-export default Table;
+export default PTable;

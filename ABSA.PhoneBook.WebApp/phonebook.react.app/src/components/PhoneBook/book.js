@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 
 import useFetch from '../../hook/usefetch'
 import PTable from '../Data/table'
+import Card from '../UI/card'
 
 const Book = () => {
   const history = useHistory()
@@ -16,9 +17,12 @@ const Book = () => {
 
   const list = phonebookData?.phoneBooks.map(book => {
     return {
-      PhoneBookName : book.name,
-      Actions: <Button onClick={() => history.push(`/entry/${book.id}`)}>View</Button>
-    }
+      PhoneBookName: book.name,
+      DateCreated: new Date(book.createdAt).toLocaleDateString('en-ZA'),
+      Actions: (
+        <Button onClick={() => history.push(`/entry/${book.id}`)}>View</Button>
+      )
+    };
   })
   
   const data = useMemo(() => list, [phonebookData])
@@ -29,6 +33,10 @@ const Book = () => {
         accessor: "PhoneBookName"
       },
       {
+        Header: "DateCreated",
+        accessor: "DateCreated"
+      },
+      {
         Header: "Actions",
         accessor: "Actions"
       }
@@ -37,29 +45,38 @@ const Book = () => {
   );
   if (isloading) return <div>loading...</div>;
   return (
-    <div className="p-4 bg-white my-4 rounded shadow-xl grid">
-      <div>
-        <Button onClick={() => history.push('/createbook')}>Create new PhoneBook</Button>
-      </div><br/>
-      <div>
-        <input type="text" value={proxySerach} onChange={e => {
-          const textValue = e.target.value;
-          setProxySerach(textValue)
-          if(!textValue) setSearch(null)
-        }} />
-        <Button onClick={() => setSearch(proxySerach) }>Search</Button>
+    <Card>
+      <div className="p-4 bg-white my-4 rounded shadow-xl grid">
+        <div>
+          <Button onClick={() => history.push("/createbook")}>
+            Create new PhoneBook
+          </Button>
+        </div>
+        <br />
+        <div>
+          <input
+            type="text"
+            value={proxySerach}
+            onChange={e => {
+              const textValue = e.target.value;
+              setProxySerach(textValue);
+              if (!textValue) setSearch(null);
+            }}
+          />{'  '}
+          <Button onClick={() => setSearch(proxySerach)}>Search</Button>
+        </div>
+        <PTable
+          data={data}
+          columns={columns}
+          setPage={setPage}
+          setPerPage={setPageSize}
+          currentpage={page}
+          perPage={pageSize}
+          totalPage={phonebookData?.total}
+        />
       </div>
-      <PTable
-        data={data}
-        columns={columns}
-        setPage={setPage}
-        setPerPage={setPageSize}
-        currentpage={page}
-        perPage={pageSize}
-        totalPage={phonebookData?.total}
-      />
-    </div>
-  )
+    </Card>
+  );
 };
 
 export default Book;
