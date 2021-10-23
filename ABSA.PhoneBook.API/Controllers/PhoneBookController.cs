@@ -36,7 +36,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var data = await _phoneBookService.GetById(id);
 
-            if (data == null) return NotFound();
+            if (data == null) return NotFound(new { errorMessage = "PhoneBook not found" });
 
             return Ok(data);
         }
@@ -45,7 +45,7 @@ namespace ABSA.PhoneBook.API.Controllers
         public async Task<IActionResult> Create([FromBody] PhoneBookCreateDto phoneBookCreateDto)
         {
             var phoneBookExist = await _phoneBookService.HasPhoneBook(phoneBookCreateDto.Name);
-            if(phoneBookExist) return BadRequest("PhoneBook with same already exist");
+            if(phoneBookExist) return BadRequest(new {errorMessage = "PhoneBook with same already exist"});
             
             var phoneBook = new Domain.Entities.PhoneBook
             {
@@ -63,7 +63,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var data = await _phoneBookService.GetById(id);
 
-            if (data == null) return NotFound();
+            if (data == null) return NotFound(new { errorMessage = "PhoneBook not found" });
             
             data.Name = phoneBookCreateDto.Name;
             data.UpdatedAt = DateTime.UtcNow;
@@ -80,7 +80,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var data = await _phoneBookService.GetById(id);
 
-            if (data == null) return NotFound();
+            if (data == null) return NotFound(new { errorMessage = "PhoneBook not found" });
 
             var result = await _phoneBookService.Delete(data);
 
@@ -112,7 +112,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var phoneBook = await _phoneBookService.GetById(phoneBookId);
 
-            if(phoneBook == null) return NotFound("PhoneBook not found");
+            if(phoneBook == null) return NotFound(new{ errorMessage = "PhoneBook not found"});
 
             var phoneBookEntry = new Domain.Entities.PhoneBookEntry
             {
@@ -132,7 +132,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var entry = await _phoneBookEntryService.GetById(entryId);
 
-            if(entry == null) return NotFound();
+            if(entry == null) return NotFound(new { errorMessage = "PhoneBook entry not found" });
 
             entry.Name = phoneBookEntryCreateDto.Name;
             entry.PhoneNumber = phoneBookEntryCreateDto.PhoneNumber;
@@ -150,7 +150,7 @@ namespace ABSA.PhoneBook.API.Controllers
         {
             var entry = await _phoneBookEntryService.GetById(entryId);
 
-            if (entry == null) return NotFound();
+            if (entry == null) return NotFound(new { errorMessage = "PhoneBook Entry not found" });
 
             var result = await _phoneBookEntryService.Delete(entry);
 

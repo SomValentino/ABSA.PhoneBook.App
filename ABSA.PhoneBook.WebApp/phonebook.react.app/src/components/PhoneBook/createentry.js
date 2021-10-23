@@ -8,7 +8,7 @@ import Card from "../UI/card";
 const CreateBookEntry = () => {
   const [name, setName] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
-  const [valid, setValid] = useState(name && phoneNumber);
+  const [valid, setValid] = useState(name && (phoneNumber && phoneNumber.length === 9));
   const { phonebookId, name: phonebookName } = useParams();
   const [payload, setPayload] = useState(null);
   const { data, isloading, error } = useFetch(
@@ -32,7 +32,7 @@ const CreateBookEntry = () => {
                   onChange={e => {
                     e.preventDefault();
                     setName(e.target.value);
-                    setValid(name && phoneNumber);
+                    setValid(name && (phoneNumber && phoneNumber.length === 9));
                   }}
                   className="form-control"
                   placeholder="Enter phonebook name"
@@ -46,14 +46,17 @@ const CreateBookEntry = () => {
                 <input
                   type="text"
                   name="phoneNumber"
+                  onInput={e =>
+                    e.target.value = e.target.value.replace(/[^0-9]/gi, "")
+                  }
                   value={phoneNumber}
                   onChange={e => {
                     e.preventDefault();
                     setPhoneNumber(e.target.value);
-                    setValid(name && phoneNumber);
+                    setValid(name && (phoneNumber && phoneNumber.length === 9));
                   }}
                   className="form-control"
-                  placeholder="Enter phoneNumber"
+                  placeholder="Enter 10 digit phoneNumber"
                   required
                   maxLength="10"
                 />
@@ -124,20 +127,18 @@ const CreateBookEntry = () => {
             </Button>
           </div>
         ) : (
-          
-            <div>
-              <p>An error occured</p>
-              <br />
-              <Button
-                type="button"
-                onClick={() =>
-                  history.push(`/entry/${phonebookId}/${phonebookName}`)
-                }
-              >
-                Back
-              </Button>
-            </div>
-          
+          <div>
+            <p>An error occured</p>
+            <br />
+            <Button
+              type="button"
+              onClick={() =>
+                history.push(`/entry/${phonebookId}/${phonebookName}`)
+              }
+            >
+              Back
+            </Button>
+          </div>
         )}
       </div>
     </Card>

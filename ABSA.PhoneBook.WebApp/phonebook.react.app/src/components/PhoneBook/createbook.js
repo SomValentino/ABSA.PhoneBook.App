@@ -21,7 +21,6 @@ const CreateBook = () => {
         {!payload && isloading && !error ? (
           <form>
             <div className="form-group row">
-              
               <div className="col-md-6">
                 <input
                   type="text"
@@ -32,15 +31,42 @@ const CreateBook = () => {
                   placeholder="Enter phonebook name"
                 />
               </div>
-            </div><br/>
+            </div>
+            <br />
             {!name ? (
-              <Button type="submit" disabled>
-                Submit
-              </Button>
+              <div className="row">
+                <div className="col-md-3">
+                  <Button type="submit" disabled>
+                    Submit
+                  </Button>
+                </div>
+                <div className="col-md-3">
+                  <Button
+                    type="button"
+                    onClick={() => history.push("/")}
+                    variant="danger"
+                  >
+                    Back
+                  </Button>
+                </div>
+              </div>
             ) : (
-              <Button type="submit" onClick={() => setPayload({ name })}>
-                Submit
-              </Button>
+              <div className="row">
+                <div className="col-md-3">
+                  <Button type="submit" onClick={() => setPayload({ name })}>
+                    Submit
+                  </Button>
+                </div>
+                <div className="col-md-3">
+                  <Button
+                    type="button"
+                    onClick={() => history.push("/")}
+                    variant="danger"
+                  >
+                    Back
+                  </Button>
+                </div>
+              </div>
             )}
           </form>
         ) : payload && !isloading && !error ? (
@@ -48,7 +74,11 @@ const CreateBook = () => {
             <p>Successfully created phonebook</p>
             <div className="row">
               <div className="col-md-3">
-                <Button type="button" onClick={() => history.push("/")}>
+                <Button
+                  type="button"
+                  onClick={() => history.push("/")}
+                  variant="danger"
+                >
                   Back
                 </Button>
               </div>
@@ -56,10 +86,14 @@ const CreateBook = () => {
           </div>
         ) : (
           <div>
-            <p>An error occured</p>
+            <p>An error occured: {error}</p>
             <div className="row">
               <div className="col-md-3">
-                <Button type="button" onClick={() => history.push("/")}>
+                <Button
+                  type="button"
+                  onClick={() => history.push("/")}
+                  variant="danger"
+                >
                   Back
                 </Button>
               </div>

@@ -27,10 +27,17 @@ const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,sear
                 body: payload ? JSON.stringify(payload) : null
             })
             
-            if (response.status === 400)
-              throw new Error("Check your request");
+            if (
+              response.status === 400 ||
+              response.status === 404 ||
+              response.status === 500
+            ) {
+              const badresponse = await response.json();
+              throw new Error(badresponse.errorMessage);
+            }
+              
             if (response.status >= 200 && response.status >= 299)
-              throw new Error("Something went wrong. kindly try again");
+              throw new Error(response.statusText);
             
             if (method !== "PUT" && method !== "DELETE"){
               const responseData = await response.json();
