@@ -1,5 +1,5 @@
 import {useState,useEffect,useCallback} from 'react'
-const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,search=null) => {
+const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,search=null,reload=false) => {
     const [data, setData] = useState(null)
     const [isloading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -45,11 +45,11 @@ const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,sear
             console.log(error.message)
             setLoading(false)
         }
-    },[path,page,pageSize,search,payload])
+    },[path,page,pageSize,search,payload,reload])
 
     useEffect(() => {
         GetData()
-    }, [path,GetData,page,pageSize,search,payload])
+    }, [path,GetData,page,pageSize,search,payload,reload])
 
     return {data,isloading,error}
 

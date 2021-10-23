@@ -6,6 +6,7 @@ import Entry from "../PhoneBook/entry";
 import CreateBook from "../PhoneBook/createbook";
 import CreateEntry from "../PhoneBook/createentry";
 import UpdateEntry from "../PhoneBook/updateentry"
+import UpdateBook from "../PhoneBook/updatebook"
 
 const Navbar = () => {
   return (
@@ -27,6 +28,9 @@ const Navbar = () => {
         </Route>
         <Route exact path="/createbook">
           <CreateBook />
+        </Route>
+        <Route exact path="/updatebook/:phonebookId">
+          <UpdateBook />
         </Route>
         <Route exact path="/createentry/:phonebookId/:name">
           <CreateEntry />

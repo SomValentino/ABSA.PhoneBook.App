@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo,useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button,Modal } from "react-bootstrap";
+
 
 import PTable from "../Data/table";
 import useFetch from "../../hook/usefetch";
@@ -13,6 +14,11 @@ const Entry = () => {
   const [pageSize, setPageSize] = useState(5);
   const [proxySerach, setProxySerach] = useState("");
   const [search, setSearch] = useState(null);
+  const [deleteId, setDeleteId] = useState(null)
+  const [entryId, setEntryId] = useState(null);
+  const [show, setShow] = useState(false)
+  const [reload, setReload] = useState(false)
+  const { REACT_APP_BaseUrl } = process.env;
 
   const { data: phonebookEntryData, isloading, error } = useFetch(
     `/api/phonebook/${phonebookId}/entries`,
@@ -20,8 +26,30 @@ const Entry = () => {
     null,
     page,
     pageSize,
-    search
+    search,
+    reload
   );
+
+  const deleteEntry = async () => {
+      try {
+        const response = await fetch(`${REACT_APP_BaseUrl}/api/phonebook/entry/${entryId}`,{method: "DELETE"})
+
+        setReload(true)
+        setEntryId(null)
+        setDeleteId(null)
+
+      } catch (error) {
+        setEntryId(null);
+        setDeleteId(null);
+        throw new Error(error.message)
+      }
+  }
+
+  useEffect(() => {
+    if(entryId)
+      deleteEntry()
+  }, [entryId])
+
 
   const list = phonebookEntryData?.phoneBookEntries.map(bookEntry => {
     return {
@@ -35,6 +63,16 @@ const Entry = () => {
             variant="warning"
           >
             Update
+          </Button>{" "}
+          <Button
+            onClick={() => {
+              setDeleteId(bookEntry.id)
+              setShow(true)
+              setReload(false)
+            }}
+            variant="danger"
+          >
+            Delete
           </Button>
         </>
       )
@@ -66,6 +104,37 @@ const Entry = () => {
   if (isloading) return <div>loading...</div>;
   return (
     <Card>
+      <Modal
+        show={show}
+        onHide={() => {
+          setShow(false);
+          setEntryId(null);
+          setDeleteId(null);
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Entry</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want delete Entry</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => {
+            setShow(false)
+            setEntryId(null);
+            setDeleteId(null);
+          }}>
+            Close
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              setEntryId(deleteId);
+              setShow(false);
+            }}
+          >
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="p-4 bg-white my-4 rounded shadow-xl grid">
         <h4>{`${name} - Entries`}</h4>
         <br />
@@ -90,8 +159,9 @@ const Entry = () => {
                   if (!textValue) setSearch(null);
                 }}
                 placeholder="Enter name or phonenumber"
+                className="form-control"
               />
-              {"  "}
+              <br />
               <Button
                 onClick={() => {
                   setSearch(proxySerach);
