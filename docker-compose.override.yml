@@ -10,7 +10,6 @@ services:
   absa.phonebook.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
       - "ConnectionStrings:PhoneBookConnection=Server=sqldata,1433;Initial Catalog=PhoneBookDb;Persist Security Info=False;User ID=sa;Password=Soccer123@#;MultipleActiveResultSets=False;Connection Timeout=30;"
     depends_on: 
       - sqldata
