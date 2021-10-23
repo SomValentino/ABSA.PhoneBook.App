@@ -5,22 +5,46 @@ import { Button } from "react-bootstrap";
 import useFetch from "../../hook/usefetch";
 import Card from "../UI/card";
 
-const CreateBookEntry = () => {
+const UpdateBookEntry = () => {
   const [name, setName] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [valid, setValid] = useState(name && phoneNumber);
-  const { phonebookId, name: phonebookName } = useParams();
+  const { phonebookId, name: phonebookName,entryId } = useParams();
   const [payload, setPayload] = useState(null);
+  const { REACT_APP_BaseUrl } = process.env;
+
   const { data, isloading, error } = useFetch(
-    `/api/phonebook/${phonebookId}/entry`,
-    "POST",
+    `/api/phonebook/entry/${entryId}`,
+    'PUT',
     payload
   );
   const history = useHistory();
+
+  const GetEntry = async () => {
+      
+      try {
+          var response = await fetch(`${REACT_APP_BaseUrl}/api/phonebook/entry/${entryId}`)
+
+          var responseData = await response.json()
+
+          setName(responseData.name)
+          setPhoneNumber(responseData.phoneNumber)
+          
+      } catch (error) {
+          throw new Error(error.message)
+      }
+  }
+
+  useEffect(() => {
+      GetEntry()
+  }, [])
+
+
   return (
+    
     <Card>
       <div>
-        <h4>Create Entry</h4>
+        <h4>Update Entry</h4>
         {!payload && isloading && !error ? (
           <form>
             <div className="form-group row">
@@ -86,10 +110,10 @@ const CreateBookEntry = () => {
                     type="submit"
                     onClick={e => {
                       e.preventDefault();
+                      
                       setPayload({
                         name,
-                        phoneNumber,
-                        phoneBookId: phonebookId
+                        phoneNumber
                       });
                     }}
                   >
@@ -124,24 +148,22 @@ const CreateBookEntry = () => {
             </Button>
           </div>
         ) : (
-          
-            <div>
-              <p>An error occured</p>
-              <br />
-              <Button
-                type="button"
-                onClick={() =>
-                  history.push(`/entry/${phonebookId}/${phonebookName}`)
-                }
-              >
-                Back
-              </Button>
-            </div>
-          
+          <div>
+            <p>An error occured</p>
+            <br />
+            <Button
+              type="button"
+              onClick={() =>
+                history.push(`/entry/${phonebookId}/${phonebookName}`)
+              }
+            >
+              Back
+            </Button>
+          </div>
         )}
       </div>
     </Card>
   );
 };
 
-export default CreateBookEntry;
+export default UpdateBookEntry;

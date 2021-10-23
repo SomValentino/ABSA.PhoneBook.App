@@ -18,9 +18,21 @@ const Book = () => {
   const list = phonebookData?.phoneBooks.map(book => {
     return {
       PhoneBookName: book.name,
-      DateCreated: new Date(book.createdAt).toLocaleDateString('en-ZA'),
+      DateCreated: new Date(book.createdAt).toLocaleDateString("en-ZA"),
       Actions: (
-        <Button onClick={() => history.push(`/entry/${book.id}/${book.name}`)}>View</Button>
+        <>
+          <Button
+            onClick={() => history.push(`/entry/${book.id}/${book.name}`)}
+          >
+            View
+          </Button>{" "}
+          <Button
+            onClick={() => history.push(`/createentry/${book.id}/${book.name}`)}
+            variant="warning"
+          >
+            Update
+          </Button>
+        </>
       )
     };
   })
@@ -64,9 +76,15 @@ const Book = () => {
                   setProxySerach(textValue);
                   if (!textValue) setSearch(null);
                 }}
+                placeholder="Enter phonebook name"
+                className="form-control col-md-3"
               />
-              {"  "}
-              <Button onClick={() => setSearch(proxySerach)}>Search</Button>
+              <br/>
+              <Button onClick={() => 
+                                {
+                                  setSearch(proxySerach)
+                                  setPage(1)
+                                }}>Search</Button>
             </div>
             <PTable
               data={data}

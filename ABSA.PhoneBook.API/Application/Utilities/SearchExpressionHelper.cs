@@ -10,9 +10,10 @@ namespace ABSA.PhoneBook.API.Application.Utilities
             return x => searchCriteria == null || (x.Name.ToLower().Contains(searchCriteria.ToLower()));
         }
 
-        public static Expression<Func<TEntity, bool>> GetSearchEntryExpression<TEntity>(string searchCriteria) where TEntity : Domain.Entities.PhoneBookEntry
+        public static Expression<Func<TEntity, bool>> GetSearchEntryExpression<TEntity>(string searchCriteria,int phoneBookId) where TEntity : Domain.Entities.PhoneBookEntry
         {
-            return x => searchCriteria == null || (x.Name.ToLower().Contains(searchCriteria.ToLower()) || x.PhoneNumber.Contains(searchCriteria));
+            return x => (searchCriteria == null || (x.Name.ToLower().Contains(searchCriteria.ToLower()) 
+                         || x.PhoneNumber.Contains(searchCriteria))) && x.PhoneBookId == phoneBookId;
         }
     }
 }

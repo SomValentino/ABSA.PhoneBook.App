@@ -31,7 +31,7 @@ namespace ABSA.PhoneBook.API.Application.Services
 
         public async Task<PhoneBookEntryDto> Get(int page, int pageSize, string searchCriteria, int phoneBookId)
         {
-            var expression = SearchExpressionHelper.GetSearchEntryExpression<Domain.Entities.PhoneBookEntry>(searchCriteria);
+            var expression = SearchExpressionHelper.GetSearchEntryExpression<Domain.Entities.PhoneBookEntry>(searchCriteria,phoneBookId);
             
             var total = await _phoneBookEntryRepository.GetTotalCount(expression);
             

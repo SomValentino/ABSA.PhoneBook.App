@@ -55,7 +55,7 @@ namespace ABSA.PhoneBook.API.Controllers
 
             var createdPhoneBook = await _phoneBookService.Create(phoneBook);
 
-            return CreatedAtRoute("GetPhoneBook", new {id = createdPhoneBook.Id},createdPhoneBook);
+            return CreatedAtAction(nameof(GetById), new {id = createdPhoneBook.Id},createdPhoneBook);
         }
 
         [HttpPut("{id}")]
@@ -124,7 +124,7 @@ namespace ABSA.PhoneBook.API.Controllers
 
             var createdEntry = await _phoneBookEntryService.Create(phoneBookEntry);
 
-            return CreatedAtRoute("GetEntry", new { entryId = createdEntry.Id},createdEntry);
+            return CreatedAtAction(nameof(GetEntry), new { entryId = createdEntry.Id},createdEntry);
         }
 
         [HttpPut("entry/{entryId}")]

@@ -32,18 +32,18 @@ const useFetch = (path,method= 'GET',payload = null,page=null,pageSize=null,sear
             if (response.status >= 200 && response.status >= 299)
               throw new Error("Something went wrong. kindly try again");
             
-            const responseData = await response.json()
+            if (method !== "PUT" && method !== "DELETE"){
+              const responseData = await response.json();
 
-            if(responseData)
-              setData(responseData)
+              if (responseData) setData(responseData);
+            } 
             setLoading(false)
+            setError(null)
 
         } catch (error) {
             setError(error.message)
+            console.log(error.message)
             setLoading(false)
-            setTimeout(() => {
-              setError(null);
-            }, 2000);
         }
     },[path,page,pageSize,search,payload])
 

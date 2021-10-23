@@ -27,7 +27,17 @@ const Entry = () => {
     return {
       Name: bookEntry.name,
       PhoneNumber: bookEntry.phoneNumber,
-      DateCreated: new Date(bookEntry.createdAt).toLocaleDateString("en-ZA")
+      DateCreated: new Date(bookEntry.createdAt).toLocaleDateString("en-ZA"),
+      Actions: (
+        <>
+          <Button
+            onClick={() => history.push(`/updateentry/${phonebookId}/${name}/${bookEntry.id}`)}
+            variant="warning"
+          >
+            Update
+          </Button>
+        </>
+      )
     };
   });
 
@@ -45,6 +55,10 @@ const Entry = () => {
       {
         Header: "DateCreated",
         accessor: "DateCreated"
+      },
+      {
+        Header: "Actions",
+        accessor: "Actions"
       }
     ],
     []
@@ -53,14 +67,18 @@ const Entry = () => {
   return (
     <Card>
       <div className="p-4 bg-white my-4 rounded shadow-xl grid">
-        <h4>{`${name} - Entries`}</h4><br/>
+        <h4>{`${name} - Entries`}</h4>
+        <br />
         <div>
-          <Button onClick={() => history.push(`/createentry/${phonebookId}/${name}`)}>
+          <Button
+            onClick={() => history.push(`/createentry/${phonebookId}/${name}`)}
+          >
             Create new PhoneBook Entry
           </Button>
         </div>
         <br />
-        {phonebookEntryData ? (
+        {phonebookEntryData.phoneBookEntries &&
+        phonebookEntryData.phoneBookEntries.length ? (
           <div>
             <div>
               <input
@@ -71,9 +89,17 @@ const Entry = () => {
                   setProxySerach(textValue);
                   if (!textValue) setSearch(null);
                 }}
+                placeholder="Enter name or phonenumber"
               />
               {"  "}
-              <Button onClick={() => setSearch(proxySerach)}>Search</Button>
+              <Button
+                onClick={() => {
+                  setSearch(proxySerach);
+                  setPage(1);
+                }}
+              >
+                Search
+              </Button>
             </div>
             <PTable
               data={data}
@@ -85,10 +111,18 @@ const Entry = () => {
               totalPage={phonebookEntryData?.total}
             />
           </div>
-        ): <div>No entry avaliable. Click on button above to create entry</div>}
+        ) : (
+          <div>No entry avaliable. Click on button above to create entry</div>
+        )}
       </div>
-      <div>
-        <Button type="button" variant="danger" onClick={() => history.push('/')}>Back</Button>
+      <div style={{ width: "10%", margin: "auto" }}>
+        <Button
+          type="button"
+          variant="danger"
+          onClick={() => history.push("/")}
+        >
+          Back
+        </Button>
       </div>
     </Card>
   );
