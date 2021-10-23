@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  sqldata:
+    environment:
+      - SA_PASSWORD=Soccer123@#
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+  absa.phonebook.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "ConnectionStrings:PhoneBookConnection=Server=sqldata,1433;Initial Catalog=PhoneBookDb;Persist Security Info=False;User ID=sa;Password=Soccer123@#;MultipleActiveResultSets=False;Connection Timeout=30;"
+    depends_on: 
+      - sqldata
+    ports:
+      - "5001:80"
+  absa.phonebook.webapp:
+    environment: 
+      - REACT_APP_BaseUrl=http://localhost:5001
+    ports:
+      - 3005:3000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - sqldata 
+      - absa.phonebook.api

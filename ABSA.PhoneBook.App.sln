@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABSA.PhoneBook.Data", "ABSA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABSA.PhoneBook.API", "ABSA.PhoneBook.API\ABSA.PhoneBook.API.csproj", "{5ADCBEBE-38ED-47B6-8986-EAF30A703A18}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{5ADCBEBE-38ED-47B6-8986-EAF30A703A18}.Release|x64.Build.0 = Release|Any CPU
 		{5ADCBEBE-38ED-47B6-8986-EAF30A703A18}.Release|x86.ActiveCfg = Release|Any CPU
 		{5ADCBEBE-38ED-47B6-8986-EAF30A703A18}.Release|x86.Build.0 = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|x64.Build.0 = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Debug|x86.Build.0 = Debug|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x64.Build.0 = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
