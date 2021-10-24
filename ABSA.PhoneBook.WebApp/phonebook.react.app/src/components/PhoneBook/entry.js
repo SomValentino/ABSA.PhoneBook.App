@@ -102,6 +102,7 @@ const Entry = () => {
     []
   );
   if (isloading) return <div>loading...</div>;
+  if (!isloading && error) return <div>An error occured: {error}</div>
   return (
     <Card>
       <Modal
@@ -117,11 +118,14 @@ const Entry = () => {
         </Modal.Header>
         <Modal.Body>Are you sure you want delete Entry</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => {
-            setShow(false)
-            setEntryId(null);
-            setDeleteId(null);
-          }}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShow(false);
+              setEntryId(null);
+              setDeleteId(null);
+            }}
+          >
             Close
           </Button>
           <Button
@@ -129,6 +133,7 @@ const Entry = () => {
             onClick={() => {
               setEntryId(deleteId);
               setShow(false);
+              setPage(1);
             }}
           >
             Save Changes
@@ -146,7 +151,7 @@ const Entry = () => {
           </Button>
         </div>
         <br />
-        {phonebookEntryData.phoneBookEntries &&
+        {phonebookEntryData && phonebookEntryData.phoneBookEntries !== null &&
         phonebookEntryData.phoneBookEntries.length ? (
           <div>
             <div>

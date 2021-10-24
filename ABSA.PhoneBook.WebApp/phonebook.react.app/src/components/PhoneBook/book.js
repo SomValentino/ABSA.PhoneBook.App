@@ -105,7 +105,10 @@ const Book = () => {
         <Modal.Header closeButton>
           <Modal.Title>Delete PhoneBook</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want delete PhoneBook. All entries in the PhoneBook will be deleted</Modal.Body>
+        <Modal.Body>
+          Are you sure you want delete PhoneBook. All entries in the PhoneBook
+          will be deleted
+        </Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
@@ -122,6 +125,7 @@ const Book = () => {
             onClick={() => {
               setPhoneBookId(deleteId);
               setShow(false);
+              setPage(1);
             }}
           >
             Save Changes
@@ -135,7 +139,8 @@ const Book = () => {
           </Button>
         </div>
         <br />
-        {phonebookData ? (
+        {phonebookData && phonebookData.phoneBooks &&
+        phonebookData.phoneBooks.length ? (
           <div>
             <div>
               <input

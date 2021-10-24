@@ -9,39 +9,39 @@ const UpdateBookEntry = () => {
   const [name, setName] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [valid, setValid] = useState(name && phoneNumber);
-  const { phonebookId, name: phonebookName,entryId } = useParams();
+  const { phonebookId, name: phonebookName, entryId } = useParams();
   const [payload, setPayload] = useState(null);
+  const [getError, setGetError] = useState(null);
   const { REACT_APP_BaseUrl } = process.env;
 
   const { data, isloading, error } = useFetch(
     `/api/phonebook/entry/${entryId}`,
-    'PUT',
+    "PUT",
     payload
   );
   const history = useHistory();
 
   const GetEntry = async () => {
-      
-      try {
-          var response = await fetch(`${REACT_APP_BaseUrl}/api/phonebook/entry/${entryId}`)
+    try {
+      var response = await fetch(
+        `${REACT_APP_BaseUrl}/api/phonebook/entry/${entryId}`
+      );
 
-          var responseData = await response.json()
+      var responseData = await response.json();
 
-          setName(responseData.name)
-          setPhoneNumber(responseData.phoneNumber)
-          
-      } catch (error) {
-          throw new Error(error.message)
-      }
-  }
+      setName(responseData.name);
+      setPhoneNumber(responseData.phoneNumber);
+    } catch (error) {
+      setGetError(error.message);
+      throw new Error(error.message);
+    }
+  };
 
   useEffect(() => {
-      GetEntry()
-  }, [])
-
+    GetEntry();
+  }, []);
 
   return (
-    
     <Card>
       <div>
         <h4>Update Entry</h4>
@@ -110,7 +110,7 @@ const UpdateBookEntry = () => {
                     type="submit"
                     onClick={e => {
                       e.preventDefault();
-                      
+
                       setPayload({
                         name,
                         phoneNumber
@@ -147,9 +147,22 @@ const UpdateBookEntry = () => {
               Back
             </Button>
           </div>
+        ) : getError ? (
+          <div>
+            <p>An error occured: {getError}</p>
+            <br />
+            <Button
+              type="button"
+              onClick={() =>
+                history.push(`/entry/${phonebookId}/${phonebookName}`)
+              }
+            >
+              Back
+            </Button>
+          </div>
         ) : (
           <div>
-            <p>An error occured</p>
+            <p>An error occured: {error}</p>
             <br />
             <Button
               type="button"

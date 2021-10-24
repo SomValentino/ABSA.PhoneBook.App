@@ -10,6 +10,7 @@ const UpdateEntry = () => {
   const [valid, setValid] = useState(name);
   const { phonebookId } = useParams();
   const [payload, setPayload] = useState(null);
+  const [getError, setGetError] = useState(null)
   const { REACT_APP_BaseUrl } = process.env;
 
   const { data, isloading, error } = useFetch(
@@ -29,6 +30,7 @@ const UpdateEntry = () => {
 
       setName(responseData.name);
     } catch (error) {
+      setGetError(error.message)
       throw new Error(error.message);
     }
   };
@@ -123,9 +125,22 @@ const UpdateEntry = () => {
               Back
             </Button>
           </div>
+        ) : getError ? (
+          <div>
+            <p>An error occured : {getError}</p>
+            <br />
+            <Button
+              type="button"
+              onClick={() =>
+                history.push(`/`)
+              }
+            >
+              Back
+            </Button>
+          </div>
         ) : (
           <div>
-            <p>An error occured</p>
+            <p>An error occured : {error}</p>
             <br />
             <Button
               type="button"
