@@ -34,4 +34,4 @@ API Url : http://localhost:5001/swagger
 
 React Frontend: http://localhost:3005
 
-
+Database: server=127.0.0.1,1433,database=PhoneBookDb,username=sa,pasword=Soccer123@#
