@@ -26,6 +26,8 @@ To run the solution with docker-compose kindly run the following code below in t
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 
 ```
+If running on visual studio select docker-compose as the startup project.
+
 Once the docker containers have been started.
 
 API Url : http://localhost:5001/swagger
