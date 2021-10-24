@@ -35,8 +35,7 @@ namespace ABSA.PhoneBook.API.Application.Services
             
             var total = await _phoneBookEntryRepository.GetTotalCount(expression);
             
-            var data = await _phoneBookEntryRepository.GetEntities(page,pageSize,expression,
-                            x => x.PhoneBookId == phoneBookId);
+            var data = await _phoneBookEntryRepository.GetEntities(page,pageSize,expression);
             
             var dtoData = new PhoneBookEntryDto
             {

@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABSA.PhoneBook.API", "ABSA.
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8600F855-82E8-47D0-A005-F1BBD09873B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABSA.PhoneBook.API.Tests", "ABSA.PhoneBook.API.Tests\ABSA.PhoneBook.API.Tests.csproj", "{D6A210AB-B217-4174-A943-AC4D15BE0349}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +76,20 @@ Global
 		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x64.Build.0 = Release|Any CPU
 		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x86.ActiveCfg = Release|Any CPU
 		{4EE0266F-6EF2-438B-86EE-8688C6B86EBB}.Release|x86.Build.0 = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|x64.Build.0 = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6A210AB-B217-4174-A943-AC4D15BE0349}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6A210AB-B217-4174-A943-AC4D15BE0349} = {8600F855-82E8-47D0-A005-F1BBD09873B3}
 	EndGlobalSection
 EndGlobal

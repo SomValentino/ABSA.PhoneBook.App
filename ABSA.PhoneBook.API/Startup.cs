@@ -43,10 +43,10 @@ namespace ABSA.PhoneBook.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrations();
             }
 
-            app.UseMigrations()
-               .UseSwaggerDoc()
+            app.UseSwaggerDoc()
                .UseAPIExceptionHandler()
                .UseCors("PhoneBookPolicy");
 

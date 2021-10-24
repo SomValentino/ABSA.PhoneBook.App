@@ -8,7 +8,6 @@ namespace ABSA.PhoneBook.Data.EntityMapping {
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(250).IsRequired();
-            builder.HasIndex(x => x.Name).IsUnique();
             builder.HasMany(x => x.Entries).WithOne(x => x.PhoneBook).HasForeignKey(x => x.PhoneBookId).OnDelete(DeleteBehavior.Cascade);
         }
     }
