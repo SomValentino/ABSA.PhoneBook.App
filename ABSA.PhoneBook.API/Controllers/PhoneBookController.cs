@@ -94,6 +94,10 @@ namespace ABSA.PhoneBook.API.Controllers
         [HttpGet("{phoneBookId}/entries")]
         public async Task<IActionResult> GetEntries(int phoneBookId, int page = 1, int pageSize = 10,string searchCriteria = null)
         {
+            var phoneBook = await _phoneBookService.GetById(phoneBookId);
+
+            if (phoneBook == null) return NotFound(new { errorMessage = "PhoneBook not found" });
+
             var entries = await _phoneBookEntryService.Get(page,pageSize,searchCriteria,phoneBookId);
 
             return Ok(entries);
@@ -103,6 +107,8 @@ namespace ABSA.PhoneBook.API.Controllers
         public async Task<IActionResult> GetEntry(int entryId)
         {
             var entry = await _phoneBookEntryService.GetById(entryId);
+
+            if (entry == null) return NotFound(new { ErrorMessage = "Entry not found" });
 
             return Ok(entry);
         }

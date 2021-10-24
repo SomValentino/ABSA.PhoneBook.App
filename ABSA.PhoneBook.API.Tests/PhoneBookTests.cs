@@ -15,11 +15,11 @@ using Xunit;
 
 namespace ABSA.PhoneBook.API.Tests
 {
-    public class PhoneBookControllerTests
+    public class PhoneBookTests
     {
         private readonly PhoneBookApplicationFactory<Startup> _factory;
 
-        public PhoneBookControllerTests()
+        public PhoneBookTests()
         {
             _factory = new PhoneBookApplicationFactory<Startup>();  
         }
@@ -114,6 +114,65 @@ namespace ABSA.PhoneBook.API.Tests
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
             Assert.NotNull(error.ErrorMessage);
         }
+
+
+        [Fact]
+        public async Task PhoneBookController_UpdatePhoneBook_ReturnsNoContent()
+        {
+            var client = _factory.CreateClient();
+
+            var request = JsonConvert.SerializeObject(new PhoneBookCreateDto
+            {
+                Name = "TestBook3"
+            });
+
+            var srequested = new StringContent(request, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"api/phonebook/{1}", srequested);
+
+            Assert.Equal(System.Net.HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_UpdatePhoneBookWithWrongId_ReturnsNotFound()
+        {
+            var client = _factory.CreateClient();
+
+            var request = JsonConvert.SerializeObject(new PhoneBookCreateDto
+            {
+                Name = "TestBook3"
+            });
+
+            var srequested = new StringContent(request, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"api/phonebook/{int.MaxValue}", srequested);
+
+            Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_DeletePhoneBook_ReturnsNotContent()
+        {
+            var client = _factory.CreateClient();
+
+           
+            var response = await client.DeleteAsync($"api/phonebook/{1}");
+
+            Assert.Equal(System.Net.HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_DeletePhoneBookWithWrongId_ReturnsNotFound()
+        {
+            var client = _factory.CreateClient();
+
+
+            var response = await client.DeleteAsync($"api/phonebook/{int.MaxValue}");
+
+            Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+
 
 
     }
