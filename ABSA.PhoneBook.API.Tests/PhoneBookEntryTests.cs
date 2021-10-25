@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -34,6 +35,73 @@ namespace ABSA.PhoneBook.API.Tests
 
             Assert.NotNull(entries);
             Assert.NotEmpty(entries.PhoneBookEntries);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_GetEntryWithPagination_ReturnsListOfPaginatedPhoneBookEntry()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync($"api/phonebook/{1}/entries?page=1&pagSize=10");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var entries = JsonConvert.DeserializeObject<PhoneBookEntryDto>(responseString);
+
+            Assert.NotNull(entries);
+            Assert.True(entries.PhoneBookEntries.Count() <= 10);
+            Assert.True(entries.NextPage == null);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_GetEntryWithWrongPagination_ReturnsNoPhoneBookEntries()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync($"api/phonebook/{1}/entries?page=2&pagSize=10");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var entries = JsonConvert.DeserializeObject<PhoneBookEntryDto>(responseString);
+
+            Assert.NotNull(entries);
+            Assert.True(entries.PhoneBookEntries.Count() == 0);
+            Assert.True(entries.PreviousPage == 1);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_GetEntryWithSearchCriteria_ReturnsListOfPaginatedPhoneBookEntry()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync($"api/phonebook/{1}/entries?page=1&pagSize=10&searchCriteria=Test1");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var entries = JsonConvert.DeserializeObject<PhoneBookEntryDto>(responseString);
+
+            Assert.NotNull(entries);
+            Assert.True(entries.PhoneBookEntries.Count() == 1);
+            Assert.True(entries.NextPage == null);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PhoneBookController_GetEntryWithWrongSearchCriteria_ReturnsNoPhoneBookEntries()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync($"api/phonebook/{1}/entries?page=1&pagSize=10&searchCriteria=xxxxxx");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var entries = JsonConvert.DeserializeObject<PhoneBookEntryDto>(responseString);
+
+            Assert.NotNull(entries);
+            Assert.True(entries.PhoneBookEntries.Count() == 0);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
