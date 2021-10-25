@@ -139,31 +139,32 @@ const Book = () => {
           </Button>
         </div>
         <br />
-        {phonebookData && phonebookData.phoneBooks &&
+        <div>
+          <input
+            type="text"
+            value={proxySerach}
+            onChange={e => {
+              const textValue = e.target.value;
+              setProxySerach(textValue);
+              if (!textValue) setSearch(null);
+            }}
+            placeholder="Enter phonebook name"
+            className="form-control col-md-3"
+          />
+          <br />
+          <Button
+            onClick={() => {
+              setSearch(proxySerach);
+              setPage(1);
+            }}
+          >
+            Search
+          </Button>
+        </div>
+        {phonebookData &&
+        phonebookData.phoneBooks &&
         phonebookData.phoneBooks.length ? (
           <div>
-            <div>
-              <input
-                type="text"
-                value={proxySerach}
-                onChange={e => {
-                  const textValue = e.target.value;
-                  setProxySerach(textValue);
-                  if (!textValue) setSearch(null);
-                }}
-                placeholder="Enter phonebook name"
-                className="form-control col-md-3"
-              />
-              <br />
-              <Button
-                onClick={() => {
-                  setSearch(proxySerach);
-                  setPage(1);
-                }}
-              >
-                Search
-              </Button>
-            </div>
             <PTable
               data={data}
               columns={columns}

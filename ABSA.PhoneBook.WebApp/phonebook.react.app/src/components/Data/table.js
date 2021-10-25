@@ -151,6 +151,7 @@ function PTable({
             max={Math.ceil(totalPage / perPage)}
             onChange={e => {
               let page = e.target.value ? Number(e.target.value) : 1;
+              page = page > Math.ceil(totalPage / perPage) ? Math.ceil(totalPage / perPage) : page
               setPage(page);
             }}
             className="w-20 border-2 rounded px-2"

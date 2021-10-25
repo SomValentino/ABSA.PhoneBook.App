@@ -26,12 +26,23 @@ const UpdateEntry = () => {
         `${REACT_APP_BaseUrl}/api/phonebook/${phonebookId}`
       );
 
+      if (
+        response.status === 400 ||
+        response.status === 404 ||
+        response.status === 500
+      ) {
+        const badresponse = await response.json();
+        throw new Error(badresponse.errorMessage);
+      }
+
+      if (response.status >= 200 && response.status >= 299)
+        throw new Error(response.statusText);
+
       var responseData = await response.json();
 
       setName(responseData.name);
     } catch (error) {
       setGetError(error.message)
-      throw new Error(error.message);
     }
   };
 
